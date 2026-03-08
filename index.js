@@ -1,3 +1,12 @@
+const express = require("express");
+const dotenv = require("dotenv");
+const cors = require("cors");
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const http = require("http");
+const { Server } = require("socket.io");
+
+
 const yargs = require("yargs");
 const { hideBin } = require("yargs/helpers");
 
@@ -7,6 +16,8 @@ const {commitrepo} = require("./controllers/commit");
 const {pullrepo} = require("./controllers/pull");
 const {pushrepo} = require("./controllers/push");
 const {revertrepo} = require("./controllers/revert");
+
+dotenv.config();
 
 yargs( hideBin(process.argv))
 
@@ -65,5 +76,54 @@ yargs( hideBin(process.argv))
 
 
 function startServer(){
-    console.log("Server logic called ");
+    const app = express();
+    const port = process.env.PORT || 3000;
+
+    app.use(bodyParser.json());
+    app.use(express.json()); 
+    const mongoURI = process.env.MONGODB_URL;
+
+    mongoose.connect(mongoURI).then(() => {
+        console.log("Connected to MongoDB");
+    }).catch((err) => {
+        console.error("Error connecting to MongoDB", err);
+    });
+
+    app.use(cors({ origin: "*" }));
+
+    app.get("/", (req, res) => {
+        res.send("welcome to versionloop backend");
+    });
+
+
+    let user = "test";
+    const httpServer = http.createServer(app);
+    const io = new Server(httpServer, {
+        cors: {
+            origin: "*",
+            methods: ["GET", "POST"],
+        },
+    });
+
+    io.on("connection", (socket) => {
+        socket.on("joinRoom", (userID) => {
+            user = userID;
+            console.log("=====");
+            console.log(user);
+            console.log("=====");
+            socket.join(userID);
+
+        }
+        );
+    });
+
+    const db = mongoose.connection;
+    db.once("open", async() => {
+        console.log("CEUD operations called");  // crud operations for commits, events, users, and diffs
+    });
+
+    httpServer.listen(port, () => {
+        console.log(`Server is running on port ${port}`);
+    }
+    );
 }
