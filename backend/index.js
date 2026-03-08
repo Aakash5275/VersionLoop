@@ -9,7 +9,11 @@ const {pushrepo} = require("./controllers/push");
 const {revertrepo} = require("./controllers/revert");
 
 yargs( hideBin(process.argv))
+
+.command("start", "start a new server",{},startServer)
+
 .command("init", "Initialise a new repository",{},initRepo)  // Command to initialize a new repository, it calls the initRepo function from the init controller
+
 .command("add <file>", "Add a file to the repository",       // Command to add a file to the staging area, it calls the addrepo function from the add controller
     (yargs) => {
      yargs.positional("file",{
@@ -25,6 +29,7 @@ yargs( hideBin(process.argv))
 //      yargs.positional("file",{
 //      describe: "The file to add to the staging area",
 //      type: "string",})},addrepo)
+
 .command(                                                  // Command to commit changes to the repository, it calls the commitrepo function from the commit controller
     "commit <message>",
     "Commit changes to the repository",(yargs) => {
@@ -37,8 +42,11 @@ yargs( hideBin(process.argv))
         commitrepo(argv.message);
     }
 )
+
 .command("pull", "Pull changes from remote repository",{},pullrepo)
+
 .command("push", "Push changes to remote repository",{},pushrepo)
+
 .command(
     "revert <commitId>",
     "Revert to a specific commit",
@@ -54,3 +62,8 @@ yargs( hideBin(process.argv))
     }
 )
 .demandCommand(1, "you need at least one command").help().argv;
+
+
+function startServer(){
+    console.log("Server logic called ");
+}
