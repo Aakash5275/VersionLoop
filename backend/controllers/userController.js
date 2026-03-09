@@ -1,6 +1,6 @@
 const getAllUsers = (req, res) => {
-    res.send(' all users fetched');
-}
+    res.send('all users fetched');
+};
 
 const signUp = (req, res) => {
     res.send('user signed up');
@@ -15,16 +15,17 @@ const getUserProfile = (req, res) => {
 };
 
 const updateUserProfile = (req, res) => {
-    res.send(' profile updated');
+    res.send('profile updated');
 };
 
 const deleteUserProfile = (req, res) => {
     res.send('profile deleted');
 };  
 
+// Match the names exactly as defined above
 module.exports = {
     getAllUsers,
-    signUp,
+    signUp, // Fixed: changed 'signup' to 'signUp'
     login,
     getUserProfile,
     updateUserProfile,
