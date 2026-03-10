@@ -8,7 +8,7 @@ const uri = process.env.MONGODB_URL;
 
 let client;
 
-async function connectToDatabase() {
+async function connectClient(){
     if (!client) {
         client = new MongoClient(uri);
         await client.connect();
@@ -18,7 +18,7 @@ async function connectToDatabase() {
 async function signUp (req, res) {
     const { username, email, password } = req.body;
     try {
-        await connectToDatabase();
+        await connectClient();
         const db = client.db('versionloop');
         const usersCollection = db.collection('users');
 
@@ -55,8 +55,30 @@ async function signUp (req, res) {
        
 };
 
-const login = (req, res) => {
-    res.send('user logged in');
+
+async function login (req, res){
+    const {email, password } = req.body;
+    try{
+        await connectClient();
+        const db = client.db('versionloop');
+        const usersCollection = db.collection('users');
+
+        const user =await usersCollection.findOne({email});
+        if (!user) {
+            return res.status(400).json({ message: 'Invalid credential' });
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: 'Invalid credential' });
+        }
+
+        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
+        res.json({token,userId: user._id});
+    } catch (err) {
+        console.error('Error during login:', err.message);
+        res.status(500).json({ message: ' server error' });
+    }
 };
 
 const getAllUsers = (req, res) => {
