@@ -31,7 +31,7 @@ const deleteRepositoryById = (req, res) => {
 };
 
 
-moudle.exports = {
+module.exports = {
     createRepository,
     getAllRepositories,
     fetchRepositortById,
