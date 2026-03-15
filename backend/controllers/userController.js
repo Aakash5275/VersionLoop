@@ -113,7 +113,7 @@ async function getUserProfile(req, res){
             res.send(user);
 
 
-            
+
 
         } catch (err) {
             console.error('Error fetching user profile:', err.message);
@@ -125,13 +125,59 @@ async function getUserProfile(req, res){
 
 
 async function updateUserProfile(req, res){
-    res.send('profile updated');
+    const currrntId = req.params.id;
+    const {email, password} = req.body;
+
+    try {
+        await connectClient();
+        const db = client.db('versionloop');
+        const usersCollection = db.collection('users');
+
+        let updateFields = {email};
+        if (password) {
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(password, salt);
+            updateFields.password = hashedPassword;
+
+        }
+        const result = await usersCollection.findOneAndUpdate(
+            {_id: new ObjectId(currrntId)},
+            {$set: updateFields},
+            {returnDocument: 'after'}
+        );
+
+       if (!result.value) {
+        return res.status(404).json({ message: 'User not found' });
+       }    
+        res.send(result.value);
+
+    } catch (err) {
+            console.error('Error fetching user profile:', err.message);
+            res.status(500).json({ message: ' server error' });
+        }
 };
 
 
 
 async function deleteUserProfile(req, res){
-    res.send('profile deleted');
+    const currrntId = req.params.id;
+    try {
+        await connectClient();
+        const db = client.db('versionloop');
+        const usersCollection = db.collection('users');
+        const result = await usersCollection.deleteOne({_id: new ObjectId(currrntId)});
+        if (result.deletedCount === 0) { // No user was deleted, meaning the user was not found
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.json({ message: 'User profile deleted successfully' });
+    } catch (err) {
+        console.error('Error deleting user profile:', err.message);
+        res.status(500).json({ message: ' server error' });
+    }
+
+
+
+   
 }; 
 
 
