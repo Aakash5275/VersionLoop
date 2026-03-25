@@ -12,5 +12,5 @@ const userSchema = new Schema({
     starRepos : [{ default: [], type: Schema.Types.ObjectId, ref: 'Repository' }],
 });
 
-const User = mongoose.model('User', UserSchema);
-export default User;
+const User = mongoose.model('User', userSchema);
+module.exports = User;

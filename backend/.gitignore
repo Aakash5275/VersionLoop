@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 node_modules/
 .env
 .aws/
 .versionloopgit/
+=======
+node_modules
+>>>>>>> 6ec3dfb769b4504911c9b7aa74111e06e8d5ad68
