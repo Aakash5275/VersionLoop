@@ -3,8 +3,8 @@ import {useNavigate , useRoutes} from 'react-router-dom';
 
 // pages Lista 
 import Dashboard from "./components/dashboard/Dashboard";
-import Prifile from "./components/user/Profile";
-import Login from "./components/auth/Login";
+import Profile from "./components/user/Profile";
+import Login from "./components/auth/Loging";
 import Signup from "./components/auth/Signup";
 
 //Auth Context 
@@ -20,7 +20,7 @@ const ProjectRoutes = () => {
             setCurrentUser({ id: userIdFromStorage });
         }
 
-        if (!userIdFromStorage && ! ["/auth", "signup"].includes(window.location.pathname)) {
+        if (!userIdFromStorage && ! ["/auth", "/signup"].includes(window.location.pathname)) {
             navigate('/auth');
         }
 
@@ -46,7 +46,7 @@ const ProjectRoutes = () => {
         },
         {
             path: "/profile",
-            element: <Prifile />
+            element: <Profile />
         }
     ]);
 

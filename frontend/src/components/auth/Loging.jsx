@@ -2,24 +2,22 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../../authContext";
 
-import { PageHeader } from "@primer/react/drafts";
-import { Box, Button } from "@primer/react";
 import "./auth.css";
 
-import logo from "../../assets/github-mark-white.svg";
+import logo from "../../assets/react.svg";
 import { Link } from "react-router-dom";
 
 const Login = () => {
-  // useEffect(() => {
-  //   localStorage.removeItem("token");
-  //   localStorage.removeItem("userId");
-  //   setCurrentUser(null);
-  // });
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const { setCurrentUser } = useAuth();
+
+  useEffect(() => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    setCurrentUser(null);
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -33,9 +31,6 @@ const Login = () => {
 
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("userId", res.data.userId);
-
-      setCurrentUser(res.data.userId);
-      setLoading(false);
 
       window.location.href = "/";
     } catch (err) {
@@ -53,13 +48,9 @@ const Login = () => {
 
       <div className="login-box-wrapper">
         <div className="login-heading">
-          <Box sx={{ padding: 1 }}>
-            <PageHeader>
-              <PageHeader.TitleArea variant="large">
-                <PageHeader.Title>Sign In</PageHeader.Title>
-              </PageHeader.TitleArea>
-            </PageHeader>
-          </Box>
+          <div style={{ padding: "8px" }}>
+            <h2>Sign In</h2>
+          </div>
         </div>
         <div className="login-box">
           <div>
@@ -87,18 +78,17 @@ const Login = () => {
             />
           </div>
 
-          <Button
-            variant="primary"
+          <button
             className="login-btn"
             disabled={loading}
             onClick={handleLogin}
           >
             {loading ? "Loading..." : "Login"}
-          </Button>
+          </button>
         </div>
         <div className="pass-box">
           <p>
-            New to GitHub? <Link to="/signup">Create an account</Link>
+            New to Versionloop? <Link to="/signup">Create an account</Link>
           </p>
         </div>
       </div>

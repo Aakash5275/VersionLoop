@@ -11,8 +11,7 @@ let client;
 
 async function connectClient(){
     if (!client) {
-        client = new MongoClient(uri, { useNewUrlParser: true,
-         useUnifiedTopology: true });
+        client = new MongoClient(uri);
         await client.connect();
     }
 }
@@ -43,7 +42,7 @@ async function signUp (req, res) {
 
         const token = jwt.sign({id: result.insertedId, username }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
 
-        res.json({token});
+        res.json({token, userId: result.insertedId});
 
     } catch (err) {
         console.error('Error during sign up:', err.message);
