@@ -22,7 +22,7 @@ async function createRepository(req, res) {
 
     const {owner, name, issues, description, content, visibility} = req.body;
     try {
-        if(!neme){
+        if(!name){
             return res.status(400).json({message: 'Repository name is required'});
         }
 
@@ -93,19 +93,18 @@ async function fetchRepositoryByName (req, res)  {
 };
 
 async function fetchRepositoryForCurrentUser (req, res) {
-   const userId = req.user; // Assuming you have user authentication and userId is available in the request
+   const userId = req.params.userId;
 
     try {
-        const repositories = await Repository.find({owner: userId});
+        const repositories = await Repository.find({owner: userId})
+            .populate('issues');
 
-        if(!repositories || repositories.length === 0){
-            return res.status(404).json({message: 'No repositories found for the current user'});
-            
-            
-            res.json({message: 'Repositories found successfully', repositories}); 
-
-
+        if (!repositories || repositories.length === 0) {
+            return res.status(200).json({ message: 'No repositories found', repositories: [] });
         }
+
+        res.json({ message: 'Repositories found successfully', repositories });
+
      } catch (err) {
         console.error('Error during fetching repositories for current user:', err.message);
         res.status(500).json({ message: 'Internal server error' });
@@ -175,6 +174,27 @@ async function deleteRepositoryById (req, res)  {
 };
 
 
+async function commitToRepo(req, res) {
+    const { id } = req.params;
+    const { message, author } = req.body;
+
+    try {
+        const repository = await Repository.findById(id);
+        if (!repository) {
+            return res.status(404).json({ message: 'Repository not found' });
+        }
+
+        repository.commits.push({ message: message || '', author: author || '', date: new Date() });
+        await repository.save();
+
+        res.json({ message: 'Commit recorded successfully', totalCommits: repository.commits.length });
+    } catch (err) {
+        console.error('Error recording commit:', err.message);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
+
 module.exports = {
     createRepository,
     getAllRepositories,
@@ -184,6 +204,7 @@ module.exports = {
     updateRepositoryById,
     toggleVisibilityById,
     deleteRepositoryById,
+    commitToRepo,
 };
 
 

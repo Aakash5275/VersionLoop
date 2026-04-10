@@ -6,7 +6,7 @@ const IssueSchema = new Schema({
     description: { type: String },
     status: { type: String, enum: ['open', 'closed'], default: 'open' },
     repository: { type: Schema.Types.ObjectId, ref: 'Repository', required: true },
-});
+}, { timestamps: true });
 
 const Issue = mongoose.model('Issue', IssueSchema);
 module.exports= Issue;

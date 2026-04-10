@@ -1,146 +1,272 @@
+@import url('https://fonts.googleapis.com/css2?family=Asap:wght@400;500;600;700&display=swap');
+
+/* ── Design tokens ── */
+:root {
+  --bg-page: #f0f6ff;
+  --bg-card: #ffffff;
+  --bg-input: #f5f9ff;
+  --bg-passkey: #f0f6ff;
+
+  --accent-primary: #2b7df7;
+  --accent-hover: #1a6de0;
+  --accent-submit: #1a6de0;
+  --accent-submit-h: #0f58c8;
+
+  --border-default: #cfe0f8;
+  --border-focus: #2b7df7;
+  --border-card: #dce8fb;
+
+  --text-primary: #0d1b35;
+  --text-secondary: #4a6080;
+  --text-label: #1e3254;
+  --text-input: #0d1b35;
+  --text-placeholder: #8aaed6;
+  --text-link: #2b7df7;
+  --text-btn: #ffffff;
+
+  --shadow-card: 0 4px 24px 0 rgba(43, 125, 247, .10),
+    0 1px 4px 0 rgba(43, 125, 247, .06);
+  --shadow-input: 0 1px 3px 0 rgba(43, 125, 247, .07);
+  --shadow-btn: 0 2px 8px 0 rgba(43, 125, 247, .25);
+
+  --radius-card: 14px;
+  --radius-input: 8px;
+  --radius-btn: 8px;
+
+  --ease: cubic-bezier(.25, .01, .25, 1);
+}
+
+/* ── Base ── */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 .login-wrapper {
-    color: #f1f6fd;
-    height: 100vh;
-    width: 100vw;
-    font-family: "Asap", sans-serif;
-    background-color: #0c1116;
+  color: var(--text-primary);
+  height: 100vh;
+  width: 100vw;
+  font-family: "Asap", sans-serif;
+  background-color: var(--bg-page);
+  /* subtle diagonal grid texture */
+  background-image:
+    linear-gradient(135deg, rgba(43, 125, 247, .04) 25%, transparent 25%),
+    linear-gradient(225deg, rgba(43, 125, 247, .04) 25%, transparent 25%),
+    linear-gradient(315deg, rgba(43, 125, 247, .04) 25%, transparent 25%),
+    linear-gradient(45deg, rgba(43, 125, 247, .04) 25%, transparent 25%);
+  background-size: 32px 32px;
+}
+
+/* ── Logo ── */
+.login-logo-container {
+  padding: 40px 0 20px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-login {
+  width: 48px;
+  filter: drop-shadow(0 2px 8px rgba(43, 125, 247, .30));
+}
+
+/* ── Outer wrapper ── */
+.login-box-wrapper {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── Main card ── */
+.login-box {
+  padding: 32px 0;
+  width: 380px;
+  min-height: 300px;
+  border-radius: var(--radius-card);
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-card);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 22px;
+  animation: slideUp .45s var(--ease) both;
+}
+
+/* ── Label ── */
+.label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+  color: var(--text-label);
+  transition: color .3s var(--ease);
+}
+
+/* ── Input ── */
+.input {
+  width: 264px;
+  height: 40px;
+  background-color: var(--bg-input);
+  border-radius: var(--radius-input);
+  padding: 0 14px;
+  border: 1.5px solid var(--border-default);
+  box-shadow: var(--shadow-input);
+  font-size: 0.95rem;
+  font-family: "Asap", sans-serif;
+  color: var(--text-input);
+  outline: none;
+  transition:
+    border-color .25s var(--ease),
+    box-shadow .25s var(--ease),
+    background .2s var(--ease);
+}
+
+.input::placeholder {
+  color: var(--text-placeholder);
+}
+
+.input:hover {
+  border-color: #90bef9;
+  background-color: #f8fbff;
+}
+
+.input:focus {
+  border-color: var(--border-focus);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(43, 125, 247, .15),
+    var(--shadow-input);
+}
+
+/* ── Submit / primary button ── */
+.submit-btn {
+  background: linear-gradient(135deg, #2b7df7 0%, #1a6de0 100%);
+  border: none;
+  width: 264px;
+  border-radius: var(--radius-btn);
+  height: 40px;
+  color: var(--text-btn);
+  font-weight: 700;
+  font-family: "Asap", sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: .02em;
+  padding: 0 1rem;
+  box-shadow: var(--shadow-btn);
+  cursor: pointer;
+  transition:
+    background .25s var(--ease),
+    box-shadow .25s var(--ease),
+    transform .15s var(--ease);
+}
+
+.submit-btn:hover {
+  background: linear-gradient(135deg, #1a6de0 0%, #0f58c8 100%);
+  box-shadow: 0 4px 14px rgba(43, 125, 247, .40);
+  transform: translateY(-1px);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-btn);
+}
+
+/* ── Login button width alias ── */
+.login-btn {
+  width: 264px;
+}
+
+/* ── Signup button width alias ── */
+.signup-button {
+  width: 264px;
+}
+
+/* ── Passkey / secondary card ── */
+.passkey-signin {
+  border: 1.5px solid var(--border-card);
+  width: 380px;
+  border-radius: var(--radius-card);
+  height: 96px;
+  margin: 4px auto;
+  background-color: var(--bg-card);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-direction: column;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  animation: slideUp .55s var(--ease) both;
+}
+
+/* ── Pass box ── */
+.pass-box {
+  width: 380px;
+  height: auto;
+  border-radius: var(--radius-card);
+  padding: 20px 10px;
+  border: 1.5px solid var(--border-card);
+  background-color: var(--bg-card);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  animation: slideUp .50s var(--ease) both;
+}
+
+/* ── Link-style text ── */
+.passkey,
+.signup {
+  color: var(--text-link);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.88rem;
+  text-decoration: none;
+  transition: color .2s var(--ease), text-decoration .2s;
+}
+
+.passkey:hover,
+.signup:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+}
+
+/* ── Card entrance animation ── */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
   }
-  
-  .login-logo-container {
-    padding: 40px 0px 20px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .logo-login {
-    width: 48px;
-  }
-  
-  .login-box-wrapper {
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .login-box {
-    padding: 20px 0px;
-    width: 364px;
-    min-height: 300px;
-    border-radius: 10px;
-    background-color: #161a23;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 30px;
-  }
-  
-  .input {
-    width: 250px;
-    height: 35px;
-    background-color: #0c1116;
-    border-radius: 5px;
-    padding: 0 1rem;
-    border: 0.5px solid #f1f6fd;
-    font-size: 1rem;
-    color: whitesmoke;
-    transition: border-color 0.3s cubic-bezier(0.25, 0.01, 0.25, 1) 0s,
-      color 0.3s cubic-bezier(0.25, 0.01, 0.25, 1) 0s,
-      background 0.2s cubic-bezier(0.25, 0.01, 0.25, 1) 0s;
-  }
-  
-  .label {
-    display: block;
-    margin-bottom: 0.3rem;
-    font-size: 0.9rem;
-    font-weight: bold;
-    color: #f1f6fd;
-    transition: color 0.3s cubic-bezier(0.25, 0.01, 0.25, 1) 0s;
-  }
-  
-  .input:hover,
-  .input:focus {
-    border-color: lightblue;
-  }
-  
-  .submit-btn {
-    background-color: #238636;
-    border: none;
-    width: 250px;
-    border-radius: 5px;
-    height: 35px;
-    color: #f1f6fd;
-    font-weight: 700;
-    padding: 0 1rem;
-  }
-  
-  .submit-btn:hover {
-    background-color: #499458;
-    cursor: pointer;
-  }
-  
-  .passkey-signin {
-    border: 0.5px solid #e6e9ed;
-    width: 360px;
-    border-radius: 10px;
-    height: 90px;
-    margin: 10px auto;
-  }
-  
-  .passkey-signin {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    flex-direction: column;
-  }
-  
-  .passkey,
-  .signup {
-    color: #2b7df7;
-    cursor: pointer;
-    /* font-size: px; */
-  }
-  
-  .login-btn {
-    width: 250px;
-  }
-  
+}
+
+/* ── Responsive ── */
+@media screen and (max-width: 400px) {
+
+  .login-box,
+  .passkey-signin,
   .pass-box {
-    width: 364px;
-    height: auto;
-    border-radius: 10px;
-    padding: 20px 10px;
-    border: 1px solid #3d3d3d;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    width: 92vw;
   }
-  
+
+  .input,
+  .submit-btn,
+  .login-btn,
   .signup-button {
-    width: 250px;
+    width: calc(92vw - 116px);
+    min-width: 160px;
   }
-  
-  @media screen and (max-width: 400px) {
-    .login-box {
-      width: 200px;
-    }
-  
-    .input {
-      width: 150px;
-    }
-  
-    .login-btn {
-      width: 150px;
-    }
-  
-    .pass-box {
-      width: 200px;
-    }
-  }
+}
